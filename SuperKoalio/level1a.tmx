@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="212" height="20" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="tileSet-hd" tilewidth="16" tileheight="16">
+  <image source="tileSet.png" trans="fe80fe" width="256" height="256"/>
+  <terraintypes>
+   <terrain name="New Terrain" tile="-1"/>
+  </terraintypes>
+ </tileset>
+ <tileset firstgid="257" name="imgres" tilewidth="16" tileheight="16">
+  <image source="imgres.jpg" width="255" height="198"/>
+ </tileset>
+ <tileset firstgid="437" name="search" tilewidth="16" tileheight="16">
+  <image source="search.jpg" width="160" height="90"/>
+ </tileset>
+ <layer name="background" width="212" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt10EKwCAMBED9/6v8WU9Sq8Gk9xkIau7LYmsAAAAAdaO/E73nLroDX3s+1lzdTuBUyc/eX0Cs2kfyBLns/5T1FQAAAAAAAAAAwB8PcQMeUQ==
+  </data>
+ </layer>
+ <layer name="walls" width="212" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt2tEJgDAMBcC6/1RCB3MEBRNI0jvIf33yqC2uBQAAkOe+cgYAqM+eDXH0CeLoUx3bu2jhtHubruvXJyrSJ4jTuU9vQ7zp32t/nf788FWn81+ntQIAADBP1r/ynSciHznHZZmZ6S6Q0fTRp1pZZmYa3acHztZrOA==
+  </data>
+ </layer>
+ <layer name="hazards" width="212" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAAAAAAAAAAAAeDZCQAAB
+  </data>
+ </layer>
+</map>
