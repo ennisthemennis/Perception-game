@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="212" height="20" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tileSet-hd" tilewidth="16" tileheight="16">
-  <image source="tileSet.png" trans="fe80fe" width="256" height="256"/>
+  
   <terraintypes>
    <terrain name="New Terrain" tile="-1"/>
   </terraintypes>
