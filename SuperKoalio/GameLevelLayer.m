@@ -6,6 +6,7 @@
 
 
 #import "GameLevelLayer.h"
+#import "GameLevelLayer2.h"
 #import "Player.h"
 #import "SimpleAudioEngine.h"
 #import "StartMenuLayer.h"
@@ -36,6 +37,8 @@
     BOOL alien2here;
     BOOL alien3here;
     BOOL alien4here;
+    CCSprite* instructions;
+    BOOL start;
     
     
 }
@@ -53,7 +56,7 @@
 	
 	// add layer as a child to scene
 	[scene addChild: layer];
- 
+    
 	
 	// return the scene
 	return scene;
@@ -64,7 +67,7 @@
     whiteback = [[CCLayerColor alloc] initWithColor:ccc4(255, 255, 255, 255)];
     [self addChild:whiteback];
     gestureRecognizer = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)] autorelease];
-    [gestureRecognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
+    [gestureRecognizer setDirection:(UISwipeGestureRecognizerDirectionUp)];
     [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer];
     gestureRecognizer2 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapFrom:)] autorelease];
     [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer2];
@@ -76,10 +79,11 @@
 {
 	// always call "super" init
 	// Apple recommends to re-assign "self" with the "super's" return value
+    start = FALSE;
 	if( (self=[super init]) ) {
-     
+        CGSize winSize = [[CCDirector sharedDirector] winSize];
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"in game?.wav"];
-       [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2];
+        [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2];
         self.isTouchEnabled = YES;
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile: @"heroframes.plist"];
         
@@ -89,7 +93,7 @@
         
         [self addChild:spriteSheet];
         
-       
+        
         
         runningFrames = [NSMutableArray array];
         
@@ -115,14 +119,14 @@
             [shakingFrames addObject:
              [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName: [NSString stringWithFormat:@"alien%d.png", i]]];
         }
-
-        map = [[CCTMXTiledMap alloc] initWithTMXFile:@"level1a.tmx"];
+        
+        map = [[CCTMXTiledMap alloc] initWithTMXFile:@"level1.tmx"];
         [self addChild:map z:15];
         walls = [map layerNamed:@"walls"];
         hazards = [map layerNamed:@"hazards"];
         player = [[Player alloc] initWithSpriteFrameName:@"hero0.png"];
         player.scale = 0.2;
-    
+        
         player.position = ccp(100, 50);
         CCAnimation *running = [CCAnimation animationWithFrames: runningFrames delay:0.1f];
         run = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:running restoreOriginalFrame:NO]];
@@ -134,7 +138,7 @@
         [map addChild:bullet];
         alien1 = [CCSprite spriteWithSpriteFrameName:@"alien0.png" ];
         alien1.scale = 0.2;
-        alien1.position = ccp(500, 50);
+        alien1.position = ccp(400, 50);
         CCAnimation *shaking = [CCAnimation animationWithFrames:shakingFrames delay:0.2f];
         shake = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:shaking restoreOriginalFrame:NO]];
         [alien1 runAction:shake];
@@ -142,7 +146,7 @@
         
         alien2 = [CCSprite spriteWithSpriteFrameName:@"alien0.png" ];
         alien2.scale = 0.2;
-        alien2.position = ccp(1300, 50);
+        alien2.position = ccp(700, 50);
         
         shake = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:shaking restoreOriginalFrame:NO]];
         [alien2 runAction:shake];
@@ -150,22 +154,25 @@
         
         alien3 = [CCSprite spriteWithSpriteFrameName:@"alien0.png" ];
         alien3.scale = 0.2;
-        alien3.position = ccp(2100, 50);
+        alien3.position = ccp(1100, 50);
         shake = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:shaking restoreOriginalFrame:NO]];
         [alien3 runAction:shake];
         [map addChild:alien3 z:15];
         
         alien4 = [CCSprite spriteWithSpriteFrameName:@"alien0.png" ];
         alien4.scale = 0.2;
-        alien4.position = ccp(2900, 50);
+        alien4.position = ccp(1500, 50);
         shake = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:shaking restoreOriginalFrame:NO]];
         [alien4 runAction:shake];
         [map addChild:alien4 z:15];
-        
+        instructions = [CCSprite spriteWithFile:@"rounded-blue-sq.png" ];
+        instructions.position = ccp(winSize.width/2, 200);
+        instructions.scale  = .1;
+        [map addChild:instructions z:5];
         velocity1 = ccp(-3.0, 0);
-         velocity2 = ccp(-3.0, 0);
-         velocity3 = ccp(-3.0, 0);
-         velocity4 = ccp(-3.0, 0);
+        velocity2 = ccp(-3.0, 0);
+        velocity3 = ccp(-3.0, 0);
+        velocity4 = ccp(-3.0, 0);
         alien1here = TRUE;
         alien2here = TRUE;
         alien3here = TRUE;
@@ -174,21 +181,22 @@
         
         [self schedule:@selector(update:)];
         
+        
 	}
 	return self;
 }
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer {
-        player.mightAsWellJump = YES;
-
-   
+    player.mightAsWellJump = NO;
+    
+    
 }
 -(void) handleTapFrom:(UITapGestureRecognizer *) recognizer {
     player.shoot = YES;
-   
+    
 }
 -(void)update:(ccTime)dt
 {
-   
+    
     
     if (gameOver) {
         
@@ -198,7 +206,7 @@
     [whiteback setColor:color];
     
     [player update:dt];
-     
+    
     [self projectileCheck];
     [self moveAliens];
     [self deathCheck];
@@ -206,6 +214,11 @@
     [self setViewpointCenter:player.position];
     [self handleHazardCollisions:player];
     [self checkForWin];
+    if(!start)
+    {
+        sleep(2);
+        start = TRUE;
+    }
     
 }
 - (CGPoint)tileCoordForPosition:(CGPoint)position
@@ -257,9 +270,9 @@
     [gids exchangeObjectAtIndex:4 withObjectAtIndex:6];
     [gids exchangeObjectAtIndex:0 withObjectAtIndex:4]; //7
     /*
-    for (NSDictionary *d in gids) {
-        NSLog(@"%@", d);
-    } //8 */
+     for (NSDictionary *d in gids) {
+     NSLog(@"%@", d);
+     } //8 */
     
     return (NSArray *)gids;
 }
@@ -317,10 +330,10 @@
                             resolutionWidth = -intersection.size.width;
                         }
                         p.desiredPosition = ccp(p.desiredPosition.x + resolutionWidth, p.desiredPosition.y);
-                    } 
-                } 
+                    }
+                }
             }
-        } 
+        }
     }
     p.position = p.desiredPosition; //8
 }
@@ -339,7 +352,7 @@
     
     CGPoint centerOfView = ccp(winSize.width/2, winSize.height/2);
     CGPoint viewPoint = ccpSub(centerOfView, actualPosition);
-    map.position = viewPoint; 
+    map.position = viewPoint;
 }
 -(void)handleHazardCollisions:(Player *)p {
     NSArray *tiles = [self getSurroundingTilesAtPosition:p.position forLayer:hazards ];
@@ -360,14 +373,16 @@
 	NSString *gameText;
     
 	if (won) {
-		gameText = @"You Won!";
+		[[CCDirector sharedDirector] replaceScene:[GameLevelLayer2 scene]];
 	} else {
 		gameText = @"You have Died!";
-	}
+	
     
     
     CCLabelTTF *diedLabel = [[CCLabelTTF alloc] initWithString:gameText fontName:@"Helvetica" fontSize:40];
-    diedLabel.position = ccp(240, 200);
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
+
+    diedLabel.position = ccp(winSize.width/2, 200);
     diedLabel.color = ccc3(0, 0, 200);
     CCMoveBy *slideIn = [[CCMoveBy alloc] initWithDuration:1.0 position:ccp(0, 250)];
     CCMenuItemImage *replay = [[CCMenuItemImage alloc] initWithNormalImage:@"replay.png" selectedImage:@"replay.png" disabledImage:@"replay.png" block:^(id sender) {
@@ -376,22 +391,23 @@
     
     NSArray *menuItems = [NSArray arrayWithObject:replay];
     CCMenu *menu = [[CCMenu alloc] initWithArray:menuItems];
-    menu.position = ccp(240, -100);
+    menu.position = ccp(winSize.width/2, -100);
     
     [self addChild:menu z:20];
     [self addChild:diedLabel z:20];
     
     [menu runAction:slideIn];
+    }
 }
 -(void)checkForWin {
-    if (player.position.x > 3250.0) {
+    if (player.position.x > 1625.0) {
         [self gameOver:1];
     }
 }
 -(void) projectileCheck
 {
     if (player.activebullet){
-       
+        
         CGPoint bulletvelocity = ccp(7.0, 0.0);
         CGPoint placehold = bullet.position;
         bullet.position = ccpAdd(bulletvelocity, placehold);
@@ -404,12 +420,12 @@
             bullet.position = ccp(0,0);
         }
         player.shoot = NO;
-       
+        
     }
     else if (player.shoot && !(player.activebullet))
     {
         player.activebullet = TRUE;
-         player.shoot = NO;
+        player.shoot = NO;
         bullet.position = player.position;
         bullet.zOrder = 20;
         CGPoint bulletvelocity = ccp(7.0, 0.0);
@@ -427,85 +443,85 @@
 {
     if (alien1here)
     {
-    if (alien1.position.x < 400)
-    {
-        velocity1 = ccp(3.0, 0);
-    
-    }
+        if (alien1.position.x < 300)
+        {
+            velocity1 = ccp(3.0, 0);
+            
+        }
     }
     if(alien2here)
     {
-    if (alien2.position.x < 1200)
-    {
-        velocity2 = ccp(3.0, 0);
-        
-    }
+        if (alien2.position.x < 600)
+        {
+            velocity2 = ccp(3.0, 0);
+            
+        }
     }
     if(alien3here)
     {
-    if (alien3.position.x < 2000)
-    {
-        velocity3 = ccp(3.0, 0);
-        
-    }
+        if (alien3.position.x < 1000)
+        {
+            velocity3 = ccp(3.0, 0);
+            
+        }
     }
     if(alien4here)
     {
-    if (alien4.position.x < 2850)
-    {
-        velocity4 = ccp(3.0, 0);
-        
-        
-    }
+        if (alien4.position.x < 1400)
+        {
+            velocity4 = ccp(3.0, 0);
+            
+            
+        }
     }
     if(alien1here)
     {
-    if (alien1.position.x >600)
-    {
-        velocity1 = ccp(-3.0, 0);
-        
-    }
+        if (alien1.position.x >500)
+        {
+            velocity1 = ccp(-3.0, 0);
+            
+        }
     }
     if(alien2here)
     {
-    if (alien2.position.x > 1350)
-    {
-        velocity2 = ccp(-3.0, 0);
-       
-    }
+        if (alien2.position.x > 800)
+        {
+            velocity2 = ccp(-3.0, 0);
+            
+        }
     }
     if(alien3here)
     {
-    if (alien3.position.x > 2200)
-    {
-        velocity3 = ccp(-3.0, 0);
-        
-    }
+        if (alien3.position.x > 1200)
+        {
+            velocity3 = ccp(-3.0, 0);
+            
+        }
     }
     if(alien4here)
         
     {
-    if (alien4.position.x > 3000)
-    {
-        velocity4 = ccp(-3.0, 0);
-        
-    }
+        if (alien4.position.x > 1600)
+        {
+            velocity4 = ccp(-3.0, 0);
+            
+        }
     }
     if (alien1here)
     {
-       alien1.position = ccpAdd(alien1.position, velocity1);
+        alien1.position = ccpAdd(alien1.position, velocity1);
     }
     if (alien2here)
     {
-    alien2.position = ccpAdd(alien2.position, velocity2);
+        alien2.position = ccpAdd(alien2.position, velocity2);
     }
     if (alien3here)
     {
-    alien3.position = ccpAdd(alien3.position, velocity3);
-                       }
+        alien3.position = ccpAdd(alien3.position, velocity3);
+    }
     if (alien4here)
     {
-    alien4.position = ccpAdd(alien4.position, velocity4);
+        alien4.position = ccpAdd(alien4.position, velocity4);
     }
 }
 -(void) deathCheck
@@ -513,95 +529,95 @@
     if (alien1here)
         
     {
-    if (CGRectIntersectsRect(bullet.boundingBox, alien1.boundingBox))
-    {
-        [alien1 removeFromParentAndCleanup:YES];
-         player.enemiesKilled ++;
-        alien1here = FALSE;
-        player.activebullet=FALSE;
-        bullet.zOrder = 0;
-        bullet.position = ccp(0,0);
-        player.scale = .2 - (player.enemiesKilled * .03);
-        [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
-    }
+        if (CGRectIntersectsRect(bullet.boundingBox, alien1.boundingBox))
+        {
+            [alien1 removeFromParentAndCleanup:YES];
+            player.enemiesKilled ++;
+            alien1here = FALSE;
+            player.activebullet=FALSE;
+            bullet.zOrder = 0;
+            bullet.position = ccp(0,0);
+            player.scale = .2 - (player.enemiesKilled * .03);
+            [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
+        }
         
     }
     if(alien2here)
     {
-    if (CGRectIntersectsRect(bullet.boundingBox, alien2.boundingBox))
-    {
-        [alien2 removeFromParentAndCleanup:YES];
-        player.enemiesKilled ++;
-        alien2here = FALSE;
-        player.activebullet=FALSE;
-        bullet.zOrder = 0;
-        bullet.position = ccp(0,0);
-        player.scale = .2 - (player.enemiesKilled * .03);
-        [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
-    }
+        if (CGRectIntersectsRect(bullet.boundingBox, alien2.boundingBox))
+        {
+            [alien2 removeFromParentAndCleanup:YES];
+            player.enemiesKilled ++;
+            alien2here = FALSE;
+            player.activebullet=FALSE;
+            bullet.zOrder = 0;
+            bullet.position = ccp(0,0);
+            player.scale = .2 - (player.enemiesKilled * .03);
+            [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
+        }
     }
     if(alien3here)
     {
-    if (CGRectIntersectsRect(bullet.boundingBox, alien3.boundingBox))
-    {
-        [alien3 removeFromParentAndCleanup:YES];
-        player.enemiesKilled ++;
-        alien3here = FALSE;
-        player.activebullet=FALSE;
-        bullet.zOrder = 0;
-        bullet.position = ccp(0,0);
-        player.scale = .2 - (player.enemiesKilled * .03);
-        [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
-    }
+        if (CGRectIntersectsRect(bullet.boundingBox, alien3.boundingBox))
+        {
+            [alien3 removeFromParentAndCleanup:YES];
+            player.enemiesKilled ++;
+            alien3here = FALSE;
+            player.activebullet=FALSE;
+            bullet.zOrder = 0;
+            bullet.position = ccp(0,0);
+            player.scale = .2 - (player.enemiesKilled * .03);
+            [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
+        }
     }
     if(alien4here)
     {
-    if (CGRectIntersectsRect(bullet.boundingBox, alien4.boundingBox))
-    {
-        [alien4 removeFromParentAndCleanup:YES];
-        player.enemiesKilled ++;
-        alien4here = FALSE;
-        player.activebullet=FALSE;
-        bullet.zOrder = 0;
-        bullet.position = ccp(0,0);
-        player.scale = .2 - (player.enemiesKilled * .03);
-        [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
-        
-        
-    }
+        if (CGRectIntersectsRect(bullet.boundingBox, alien4.boundingBox))
+        {
+            [alien4 removeFromParentAndCleanup:YES];
+            player.enemiesKilled ++;
+            alien4here = FALSE;
+            player.activebullet=FALSE;
+            bullet.zOrder = 0;
+            bullet.position = ccp(0,0);
+            player.scale = .2 - (player.enemiesKilled * .03);
+            [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2 + (0.2*player.enemiesKilled)];
+            
+            
+        }
     }
     if (alien1here)
     {
-    if (CGRectIntersectsRect(player.boundingBox, alien1.boundingBox))
-    {
-        [self gameOver:0];
-        
-    }
+        if (CGRectIntersectsRect(player.boundingBox, alien1.boundingBox))
+        {
+            [self gameOver:0];
+            
+        }
     }
     if(alien2here)
     {
-    
-    
-    if (CGRectIntersectsRect(player.boundingBox, alien2.boundingBox))
-    {
-        [self gameOver:0];
-    }
+        
+        
+        if (CGRectIntersectsRect(player.boundingBox, alien2.boundingBox))
+        {
+            [self gameOver:0];
+        }
     }
     if(alien3here)
     {
-    if (CGRectIntersectsRect(player.boundingBox, alien3.boundingBox))
-    {
-        [self gameOver:0];
-    }
+        if (CGRectIntersectsRect(player.boundingBox, alien3.boundingBox))
+        {
+            [self gameOver:0];
+        }
     }
     if (alien4here)
     {
-    
-    
-    if (CGRectIntersectsRect(player.boundingBox, alien4.boundingBox))
-    {
-        [self gameOver:0];
-    }
+        
+        
+        if (CGRectIntersectsRect(player.boundingBox, alien4.boundingBox))
+        {
+            [self gameOver:0];
+        }
     }
 }
 
