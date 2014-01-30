@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="130" height="20" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" width="106" height="20" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="search" tilewidth="16" tileheight="16">
-  <image source="../Dropbox/6.670/Perception/SuperKoalio/search.jpg" width="72" height="40"/>
+  <image source="search.jpg" width="72" height="40"/>
  </tileset>
- <layer name="background" width="130" height="20">
+ <layer name="background" width="106" height="20">
   <data encoding="base64" compression="zlib">
-   eJzt1TkKADAIADD7/093LdJD6CYJiDorGgEAdDOW2PVxqekjz3UUM71U5p7vBf28/sJpLwAAAAAAAODHBNQxACE=
+   eJzt1t0KgCAMgFHz/R86ugtZOdPNLb4DkXUh+zMqBQBwOXYH8CP1dknP5WUdiTQT7bsscyPF2da9Ku9WdtVS29PR+Fblo+lLe948ZTkDo0bz6n33nvrmEZvVHthL20OLXjM/cWrwNY4o8c+yzqO3v3cdV/2jzGJ+AAAAAACZnUw4AFw=
   </data>
  </layer>
- <layer name="walls" width="130" height="20">
+ <layer name="walls" width="106" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwzENAAAMA6DWv+k+k7ATEhIAAAAAAAAAAIAfVb0DOuYBBQ==
+   eJztwzENAAAMA6DWv+ma2LEDEhIAAAAAAAAAPqp6doH3ANU=
   </data>
  </layer>
- <layer name="hazards" width="130" height="20">
+ <layer name="hazards" width="106" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20JT6AAAAAAAAAAAAAAvgYooAAB
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAwLcBISAAAQ==
   </data>
  </layer>
 </map>
