@@ -33,10 +33,10 @@
 {
     if( (self=[super init] )) {
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"menu?.wav"];
-        
+        CGSize winSize = [[CCDirector sharedDirector] winSize];
         CCSprite * bg = [CCSprite spriteWithFile:@"Title card?.png"];
-        [self resizeSprite:bg toWidth:480 toHeight:320];
-        [bg setPosition:ccp(240,160)];
+        [self resizeSprite:bg toWidth:winSize.width toHeight:winSize.height];
+        [bg setPosition:ccp((winSize.width/2),(winSize.height/2))];
         [self addChild:bg];
         [self setUpMenus];
     }
@@ -44,12 +44,14 @@
 }
 -(void) setUpMenus
 {
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
+
     CCMenuItemImage *menuItem1 = [CCMenuItemImage itemWithNormalImage:@"play button?.png"
                                                         selectedImage: @"play button?.png"
                                                                target:self
                                                              selector:@selector(doThis:)];
     self.myMenu = [CCMenu menuWithItems:menuItem1, nil];
-    self.myMenu.position = ccp(240,80);
+    self.myMenu.position = ccp(winSize.width/2,80);
     
     
     [self addChild:self.myMenu];
