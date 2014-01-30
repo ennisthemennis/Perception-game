@@ -1,13 +1,21 @@
 //
-//  GameLevelLayer2.h
-//  Perception
+//  GameLevelLayer.h
+//  SuperKoalio
 //
-//  Created by Michaela Ennis on 1/29/14.
-//  Copyright (c) 2014 Interrobang Software LLC. All rights reserved.
-//
+//  Created by Jacob Gundersen on 6/4/12.
 
-#import "CCLayer.h"
+#import <Foundation/Foundation.h>
+#import "cocos2d.h"
 
-@interface GameLevelLayer2 : CCLayer
+
+@interface GameLevelLayer2 : CCLayer {
+    CCAction *run;
+    NSMutableArray *runningFrames;
+    CCAction *shake;
+    NSMutableArray *shakingFrames;
+}
+@property(nonatomic,retain) NSDate *start;
+
++(CCScene *) scene;
 
 @end
