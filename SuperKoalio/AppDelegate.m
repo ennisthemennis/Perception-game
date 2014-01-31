@@ -35,6 +35,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
 	// Create the main window
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
@@ -80,6 +81,7 @@
 //	[window_ setRootViewController:rootViewController_];
 	//[window_ addSubview:navController_.view];
    [window_ setRootViewController:navController_];
+    
 	// make main window visible
 	[window_ makeKeyAndVisible];
 

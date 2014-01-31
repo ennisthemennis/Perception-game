@@ -6,10 +6,11 @@
 
 
 #import "GameLevelLayer.h"
-#import "GameLevelLayer2.h"
+#import "Level1DieLayer.h"
+#import "Level1DoneLayer.h"
 #import "Player.h"
 #import "SimpleAudioEngine.h"
-#import "StartMenuLayer.h"
+
 
 
 
@@ -29,7 +30,7 @@
     CCSprite* alien2;
     CCSprite* alien3;
     CCSprite* alien4;
-    CGPoint velocity1;
+   
     CGPoint velocity2;
     CGPoint velocity3;
     CGPoint velocity4;
@@ -39,6 +40,10 @@
     BOOL alien4here;
     CCSprite* instructions;
     BOOL start;
+    CCSprite* count1;
+    CCSprite* count2;
+    CCSprite* count3;
+    BOOL go;
     
     
 }
@@ -88,7 +93,7 @@
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile: @"heroframes.plist"];
         
         
-        
+        go = FALSE;
         CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"heroframes.png"];
         
         [self addChild:spriteSheet];
@@ -128,6 +133,7 @@
         player.scale = 0.2;
         
         player.position = ccp(100, 50);
+        
         CCAnimation *running = [CCAnimation animationWithFrames: runningFrames delay:0.1f];
         run = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:running restoreOriginalFrame:NO]];
         [player runAction:run];
@@ -167,9 +173,9 @@
         [map addChild:alien4 z:15];
         instructions = [CCSprite spriteWithFile:@"rounded-blue-sq.png" ];
         instructions.position = ccp(winSize.width/2, 200);
-        instructions.scale  = .1;
+        instructions.scale  = .125;
         [map addChild:instructions z:5];
-        velocity1 = ccp(-3.0, 0);
+       
         velocity2 = ccp(-3.0, 0);
         velocity3 = ccp(-3.0, 0);
         velocity4 = ccp(-3.0, 0);
@@ -177,7 +183,29 @@
         alien2here = TRUE;
         alien3here = TRUE;
         alien4here = TRUE;
+        count1 = [CCSprite spriteWithFile:@"count3.png"];
         
+        
+        count1.position = ccp(winSize.width/2, 75);
+        
+        [map addChild:count1 z:0];
+        count1.visible = FALSE;
+
+        count2 = [CCSprite spriteWithFile:@"count2.png"];
+        
+        
+        count2.position = ccp(winSize.width/2, 75);
+        
+        [map addChild:count2 z:0];
+        count2.visible =FALSE;
+        count3 = [CCSprite spriteWithFile:@"count1.png"];
+        
+        
+        count3.position = ccp(winSize.width/2, 75);
+    
+        [map addChild:count3 z:0];
+        count3.visible = FALSE;
+      
         
         [self schedule:@selector(update:)];
         
@@ -205,20 +233,72 @@
     ccColor3B color = {(255 - (player.enemiesKilled*45)), (255 - (player.enemiesKilled*45)), (255 - (player.enemiesKilled*45))};
     [whiteback setColor:color];
     
-    [player update:dt];
-    
-    [self projectileCheck];
-    [self moveAliens];
-    [self deathCheck];
-    [self checkForAndResolveCollisions:player];
-    [self setViewpointCenter:player.position];
-    [self handleHazardCollisions:player];
-    [self checkForWin];
-    if(!start)
+    if(start)
     {
-        sleep(2);
-        start = TRUE;
+        [player update:dt];
+        
+        [self projectileCheck];
+        [self moveAliens];
+        [self deathCheck];
+        [self checkForAndResolveCollisions:player];
+        [self setViewpointCenter:player.position];
+        [self handleHazardCollisions:player];
+        [self checkForWin];
     }
+    if(!start && !go)
+        
+    {
+        go = TRUE;
+        [self performSelector:@selector(firstUpdate) withObject:nil afterDelay:1];
+        
+        [self performSelector:@selector(secondUpdate) withObject:nil afterDelay:2];
+        
+        
+        [self performSelector:@selector(thirdUpdate) withObject:nil afterDelay:3];
+        
+        
+        [self performSelector:@selector(fourthUpdate) withObject:nil afterDelay:4];
+        
+        
+        
+        
+    }
+    
+}
+
+-(void) firstUpdate
+{
+    
+    
+    count1.visible = TRUE;
+    
+    
+}
+-(void) secondUpdate
+{
+    
+    [count1 removeFromParentAndCleanup:YES];
+    
+    count2.visible = TRUE;
+    
+    
+    
+}
+-(void) thirdUpdate
+{
+    
+    [count2 removeFromParentAndCleanup:YES];
+    count3.visible = TRUE;
+    
+    
+}
+-(void)fourthUpdate
+{
+    
+    
+    [count3 removeFromParentAndCleanup:YES];
+    
+    start = TRUE;
     
 }
 - (CGPoint)tileCoordForPosition:(CGPoint)position
@@ -367,36 +447,20 @@
 }
 -(void)gameOver:(BOOL)won {
 	gameOver = YES;
-    
+  
     gestureRecognizer.enabled = NO;
     gestureRecognizer2.enabled = NO;
-	NSString *gameText;
-    
-	if (won) {
-		[[CCDirector sharedDirector] replaceScene:[GameLevelLayer2 scene]];
-	} else {
-		gameText = @"You have Died!";
 	
     
+	if (won) {
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"level1complete"];
+		[[CCDirector sharedDirector] replaceScene:[Level1DoneLayer scene]];
+	} else {
+		[[CCDirector sharedDirector] replaceScene:[Level1DieLayer scene]];
+	
     
-    CCLabelTTF *diedLabel = [[CCLabelTTF alloc] initWithString:gameText fontName:@"Helvetica" fontSize:40];
-    CGSize winSize = [[CCDirector sharedDirector] winSize];
-
-    diedLabel.position = ccp(winSize.width/2, 200);
-    diedLabel.color = ccc3(0, 0, 200);
-    CCMoveBy *slideIn = [[CCMoveBy alloc] initWithDuration:1.0 position:ccp(0, 250)];
-    CCMenuItemImage *replay = [[CCMenuItemImage alloc] initWithNormalImage:@"replay.png" selectedImage:@"replay.png" disabledImage:@"replay.png" block:^(id sender) {
-        [[CCDirector sharedDirector] replaceScene:[GameLevelLayer scene]];
-    }];
-    
-    NSArray *menuItems = [NSArray arrayWithObject:replay];
-    CCMenu *menu = [[CCMenu alloc] initWithArray:menuItems];
-    menu.position = ccp(winSize.width/2, -100);
-    
-    [self addChild:menu z:20];
-    [self addChild:diedLabel z:20];
-    
-    [menu runAction:slideIn];
+  
     }
 }
 -(void)checkForWin {
@@ -441,15 +505,7 @@
 }
 -(void) moveAliens
 {
-    if (alien1here)
-    {
-        if (alien1.position.x < 300)
-        {
-            velocity1 = ccp(3.0, 0);
-            
-        }
-    }
-    if(alien2here)
+        if(alien2here)
     {
         if (alien2.position.x < 600)
         {
@@ -474,15 +530,7 @@
             
         }
     }
-    if(alien1here)
-    {
-        if (alien1.position.x >500)
-        {
-            velocity1 = ccp(-3.0, 0);
-            
-        }
-    }
-    if(alien2here)
+       if(alien2here)
     {
         if (alien2.position.x > 800)
         {
@@ -507,11 +555,7 @@
             
         }
     }
-    if (alien1here)
-    {
-        alien1.position = ccpAdd(alien1.position, velocity1);
-    }
-    if (alien2here)
+        if (alien2here)
     {
         alien2.position = ccpAdd(alien2.position, velocity2);
     }

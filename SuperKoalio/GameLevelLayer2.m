@@ -6,10 +6,10 @@
 
 
 #import "GameLevelLayer2.h"
-#import "GameLevelLayer.h"
+#import "Level2DoneLayer.h"
 #import "Player.h"
 #import "SimpleAudioEngine.h"
-#import "StartMenuLayer.h"
+#import "Level2DieLayer.h"
 
 
 
@@ -29,6 +29,10 @@
  
     CCSprite* instructions;
     BOOL start;
+    CCSprite* count1;
+    CCSprite* count2;
+    CCSprite* count3;
+    BOOL go;
     
     
 }
@@ -118,6 +122,7 @@
         player.scale = 0.2;
         
         player.position = ccp(100, 50);
+       
         CCAnimation *running = [CCAnimation animationWithFrames: runningFrames delay:0.1f];
         run = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:running restoreOriginalFrame:NO]];
         [player runAction:run];
@@ -128,9 +133,31 @@
         [map addChild:bullet];
         instructions = [CCSprite spriteWithFile:@"rounded-blue-sq-2.png" ];
         instructions.position = ccp(winSize.width/2, 200);
-        instructions.scale  = .1;
+        instructions.scale  = .125;
         [map addChild:instructions z:5];
+        count1 = [CCSprite spriteWithFile:@"count3.png"];
         
+        
+        count1.position = ccp(winSize.width/2, 75);
+        
+        [map addChild:count1 z:0];
+        count1.visible = FALSE;
+        
+        count2 = [CCSprite spriteWithFile:@"count2.png"];
+        
+        
+        count2.position = ccp(winSize.width/2, 75);
+        
+        [map addChild:count2 z:0];
+        count2.visible =FALSE;
+        count3 = [CCSprite spriteWithFile:@"count1.png"];
+        
+        
+        count3.position = ccp(winSize.width/2, 75);
+        
+        [map addChild:count3 z:0];
+        count3.visible = FALSE;
+        go = FALSE;
         
         [self schedule:@selector(update:)];
         
@@ -158,20 +185,71 @@
     ccColor3B color = {(255 - (player.enemiesKilled*45)), (255 - (player.enemiesKilled*45)), (255 - (player.enemiesKilled*45))};
     [whiteback setColor:color];
     
-    [player update:dt];
-    
-    [self projectileCheck];
-    
-    
-    [self checkForAndResolveCollisions:player];
-    [self setViewpointCenter:player.position];
-    [self handleHazardCollisions:player];
-    [self checkForWin];
-    if(!start)
+    if(start)
     {
-        sleep(2);
-        start = TRUE;
+        [player update:dt];
+        
+        [self projectileCheck];
+        
+        [self checkForAndResolveCollisions:player];
+        [self setViewpointCenter:player.position];
+        [self handleHazardCollisions:player];
+        [self checkForWin];
     }
+    if(!start && !go)
+        
+    {
+        go = TRUE;
+        [self performSelector:@selector(firstUpdate) withObject:nil afterDelay:1];
+        
+        [self performSelector:@selector(secondUpdate) withObject:nil afterDelay:2];
+        
+        
+        [self performSelector:@selector(thirdUpdate) withObject:nil afterDelay:3];
+        
+        
+        [self performSelector:@selector(fourthUpdate) withObject:nil afterDelay:4];
+        
+        
+        
+        
+    }
+    
+}
+
+-(void) firstUpdate
+{
+    
+    
+    count1.visible = TRUE;
+    
+    
+}
+-(void) secondUpdate
+{
+    
+    [count1 removeFromParentAndCleanup:YES];
+    
+    count2.visible = TRUE;
+    
+    
+    
+}
+-(void) thirdUpdate
+{
+    
+    [count2 removeFromParentAndCleanup:YES];
+    count3.visible = TRUE;
+    
+    
+}
+-(void)fourthUpdate
+{
+    
+    
+    [count3 removeFromParentAndCleanup:YES];
+    
+    start = TRUE;
     
 }
 - (CGPoint)tileCoordForPosition:(CGPoint)position
@@ -323,33 +401,15 @@
     
     gestureRecognizer.enabled = NO;
     gestureRecognizer2.enabled = NO;
-	NSString *gameText;
+
     
 	if (won) {
-		gameText = @"You Won!";
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"level2complete"];
+		[[CCDirector sharedDirector] replaceScene:[Level2DoneLayer scene]];
 	} else {
-		gameText = @"You have Died!";
-	}
-    
-    
-    CCLabelTTF *diedLabel = [[CCLabelTTF alloc] initWithString:gameText fontName:@"Helvetica" fontSize:40];
-    CGSize winSize = [[CCDirector sharedDirector] winSize];
-    
-    diedLabel.position = ccp(winSize.width/2, 200);
-    diedLabel.color = ccc3(0, 0, 200);
-    CCMoveBy *slideIn = [[CCMoveBy alloc] initWithDuration:1.0 position:ccp(0, 250)];
-    CCMenuItemImage *replay = [[CCMenuItemImage alloc] initWithNormalImage:@"replay.png" selectedImage:@"replay.png" disabledImage:@"replay.png" block:^(id sender) {
-        [[CCDirector sharedDirector] replaceScene:[GameLevelLayer scene]];
-    }];
-    
-    NSArray *menuItems = [NSArray arrayWithObject:replay];
-    CCMenu *menu = [[CCMenu alloc] initWithArray:menuItems];
-    menu.position = ccp(winSize.width/2, -100);
-    
-    [self addChild:menu z:20];
-    [self addChild:diedLabel z:20];
-    
-    [menu runAction:slideIn];
+        [[CCDirector sharedDirector] replaceScene:[Level2DieLayer scene]];
+		    }
 }
 -(void)checkForWin {
     if (player.position.x > 1650.0) {

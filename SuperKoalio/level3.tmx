@@ -10,7 +10,7 @@
  </layer>
  <layer name="walls" width="400" height="20">
   <data encoding="base64" compression="zlib">
-   eJzt20EOgzAMBED4/6d7r4SEXOjGzozkExwWxalpqh4HQG9nOgAALZkfAFSYHwBUmB8AVJgfMNM5vMizDgBUmB8AVJgfAFSsNj/SZ6rOV2ewzuwk1cf2D/RnH+8t9X6s76A/+5iEf/edcwR4nv1Dgr5jVbv/XrX78++uw5qvkAGAfn6dH96NAPbksx0AAGC29H8jv793prM8dQaazng3ezrP2/0y4Xm71pVVMlWuV+9VuTVdre5IZ7ybPZ3n7X6Z8Lxd68oqmSrXq/dOrQ/VkgOO
+   eJzt20EKg0AQBEDN/x+de0CQTszM7FbBnPTQ4sZelBwHwGxndQAARtIfACT0BwAJ/QFAQn8AkNAfACT0BwAJ/QFAolt/nI2GuXa/z68Nhnqr/n4AdlG1P9YfACT+3R+7vUcAWJXnNl35XnXN94D1TVjzHTIAMM+3/WFvCLAnz3YAEvoDAOao/m/k576hOsuv3oFWZ7ybvTrP0+tlheudOle6ZEqOp+eaunvabe6ozng3e3Wep9fLCtc7da50yZQcT89ddd4tSQPD
   </data>
  </layer>
  <layer name="hazards" width="400" height="20">

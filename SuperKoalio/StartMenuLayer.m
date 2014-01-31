@@ -7,9 +7,11 @@
 //
 
 #import "StartMenuLayer.h"
-#import "GameLevelLayer.h"
+#import "LevelSelectLayer.h"
 #import "CCMenu.h"
 #import "SimpleAudioEngine.h"
+#import "GameLevelLayer.h"
+
 @implementation StartMenuLayer
 +(id) scene
 {
@@ -61,7 +63,7 @@
     
     
    
-        [[CCDirector sharedDirector] replaceScene: [GameLevelLayer scene]];
+        [[CCDirector sharedDirector] replaceScene: [LevelSelectLayer scene]];
     
 }
 

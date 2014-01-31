@@ -57,7 +57,7 @@
     self.velocity = ccpAdd(self.velocity, forwardStep);
     
     CGPoint minMovement = ccp(0.0, -450.0);
-    CGPoint maxMovement = ccp(300.0 - (self.enemiesKilled * 50), 300.0);
+    CGPoint maxMovement = ccp(300.0 - (self.enemiesKilled * 50), 300.0-(self.enemiesKilled * 25));
     self.velocity = ccpClamp(self.velocity, minMovement, maxMovement); //4
     
     CGPoint stepVelocity = ccpMult(self.velocity, dt);
