@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="400" height="20" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="search" tilewidth="16" tileheight="16">
+  <image source="search.jpg" width="72" height="40"/>
+ </tileset>
+ <layer name="background" width="400" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt2LsNACAIBUDcf2lbY/zQ2MhdQoAJXiACAAAAAN5qQ632OMwA1DXnQUt2AGrL5MV8nwDA7X+1yxMAAAAAAAAAAAAAAAAAAAAAAAAAAAD4VQeFOAAh
+  </data>
+ </layer>
+ <layer name="walls" width="400" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt20EOgzAMBED4/6d7r4SEXOjGzozkExwWxalpqh4HQG9nOgAALZkfAFSYHwBUmB8AVJgfMNM5vMizDgBUmB8AVJgfAFSsNj/SZ6rOV2ewzuwk1cf2D/RnH+8t9X6s76A/+5iEf/edcwR4nv1Dgr5jVbv/XrX78++uw5qvkAGAfn6dH96NAPbksx0AAGC29H8jv793prM8dQaazng3ezrP2/0y4Xm71pVVMlWuV+9VuTVdre5IZ7ybPZ3n7X6Z8Lxd68oqmSrXq/dOrQ/VkgOO
+  </data>
+ </layer>
+ <layer name="hazards" width="400" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1hDaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbn0AAAE=
+  </data>
+ </layer>
+</map>

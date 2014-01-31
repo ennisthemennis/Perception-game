@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="400" height="20" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="search" tilewidth="16" tileheight="16">
+  <image source="search.jpg" width="72" height="40"/>
+ </tileset>
+ <layer name="background" width="400" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt2LsNACAIBUDcf2lbY/zQ2MhdQoAJXiACAAAAAN5qQ632OMwA1DXnQUt2AGrL5MV8nwDA7X+1yxMAAAAAAAAAAAAAAAAAAAAAAAAAAAD4VQeFOAAh
+  </data>
+ </layer>
+ <layer name="walls" width="400" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt2jEOgCAQBED8/6eNhS1RPOCEmWQrCg4MBgilAAAAAAAAAAAAwNqOwAAAwMW+Eb6LPKutEiAv6x0AAACAN9wnA3/gHwQxrCUAAEay/wQAAADg1vtdUkv7yPdSO/SdJeZAambXlim9zR7f07G3tI/8Jjv0nSXmQGpm15YpvUXVeQL/jwNv
+  </data>
+ </layer>
+ <layer name="hazards" width="400" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1hDaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbn0AAAE=
+  </data>
+ </layer>
+</map>
