@@ -66,6 +66,7 @@
 		E98A129B189B1E700054EF4B /* Level5DoneLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A129A189B1E700054EF4B /* Level5DoneLayer.m */; };
 		E98A129E189B1FCD0054EF4B /* background die.png in Resources */ = {isa = PBXBuildFile; fileRef = E98A129C189B1FCD0054EF4B /* background die.png */; };
 		E98A129F189B1FCD0054EF4B /* background complete.png in Resources */ = {isa = PBXBuildFile; fileRef = E98A129D189B1FCD0054EF4B /* background complete.png */; };
+		E98A12D6189B52910054EF4B /* rounded-blue-sq-1.png in Resources */ = {isa = PBXBuildFile; fileRef = E98A12D5189B52910054EF4B /* rounded-blue-sq-1.png */; };
 		E9E12382188F973D008A3215 /* projectile.png in Resources */ = {isa = PBXBuildFile; fileRef = E9E12381188F973D008A3215 /* projectile.png */; };
 		E9E12389188F9E3C008A3215 /* heroframes.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9E12387188F9E3C008A3215 /* heroframes.plist */; };
 		E9E1238A188F9E3C008A3215 /* heroframes.png in Resources */ = {isa = PBXBuildFile; fileRef = E9E12388188F9E3C008A3215 /* heroframes.png */; };
@@ -264,6 +265,7 @@
 		E98A129A189B1E700054EF4B /* Level5DoneLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Level5DoneLayer.m; sourceTree = "<group>"; };
 		E98A129C189B1FCD0054EF4B /* background die.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background die.png"; sourceTree = "<group>"; };
 		E98A129D189B1FCD0054EF4B /* background complete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background complete.png"; sourceTree = "<group>"; };
+		E98A12D5189B52910054EF4B /* rounded-blue-sq-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rounded-blue-sq-1.png"; sourceTree = "<group>"; };
 		E9E12381188F973D008A3215 /* projectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = projectile.png; path = Resources/projectile.png; sourceTree = "<group>"; };
 		E9E12387188F9E3C008A3215 /* heroframes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = heroframes.plist; path = Resources/heroframes.plist; sourceTree = "<group>"; };
 		E9E12388188F9E3C008A3215 /* heroframes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = heroframes.png; path = Resources/heroframes.png; sourceTree = "<group>"; };
@@ -626,6 +628,7 @@
 		F2F815F2157DB94100F54D43 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E98A12D5189B52910054EF4B /* rounded-blue-sq-1.png */,
 				E98A1265189AF8A60054EF4B /* rounded-blue-sq-4.png */,
 				E98A127C189B164C0054EF4B /* background select.png */,
 				E98A1246189A175D0054EF4B /* rounded-blue-sq-3.png */,
@@ -1119,6 +1122,7 @@
 				E9114F3A188F7DDA000E0962 /* imgres.jpg in Resources */,
 				F2F81609157DB94100F54D43 /* iTunesArtwork in Resources */,
 				E98A126D189AFA720054EF4B /* continue.jpg in Resources */,
+				E98A12D6189B52910054EF4B /* rounded-blue-sq-1.png in Resources */,
 				E98A1264189ADFA80054EF4B /* level3.tmx in Resources */,
 				E9FE5E141899B6F1001064DC /* level1.tmx in Resources */,
 				E98A122A1899CAFA0054EF4B /* rounded-blue-sq-2.png in Resources */,

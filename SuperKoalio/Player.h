@@ -23,5 +23,6 @@
 @property(nonatomic,assign) int enemiesKilled;
 -(CGRect)collisionBoundingBox;
 -(void)update:(ccTime)dt;
+-(id)initWithFile:(NSString *)filename;
 
 @end

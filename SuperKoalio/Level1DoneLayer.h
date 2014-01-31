@@ -22,6 +22,6 @@
 -(void) doThis2: (CCMenuItem  *) menuItem;
 -(void) doThis3: (CCMenuItem  *) menuItem;
 
-
+-(void)resizeSprite:(CCSprite*)sprite toWidth:(float)width toHeight:(float)height;
 
 @end

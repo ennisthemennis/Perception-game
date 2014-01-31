@@ -22,6 +22,7 @@
     CCLayerColor *whiteback;
     UISwipeGestureRecognizer *gestureRecognizer;
     UITapGestureRecognizer *gestureRecognizer2;
+    UISwipeGestureRecognizer *gestureRecognizer3;
     CCSprite *bullet;
     NSTimeInterval timeInterval;
     CCSprite* alien1;
@@ -47,6 +48,7 @@
     CCSprite* count3;
     BOOL go;
     BOOL stuck;
+    BOOL paused;
     
     
 }
@@ -79,6 +81,9 @@
     [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer];
     gestureRecognizer2 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapFrom:)] autorelease];
     [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer2];
+    gestureRecognizer3 = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)] autorelease];
+    [gestureRecognizer3 setDirection:(UISwipeGestureRecognizerDirectionDown)];
+    [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer3];
     
     
 }
@@ -118,7 +123,7 @@
         CCSpriteBatchNode *spriteSheet2 = [CCSpriteBatchNode batchNodeWithFile:@"alienframes.png"];
         
         [self addChild:spriteSheet2];
-        
+        paused = FALSE;
         
         
         shakingFrames = [NSMutableArray array];
@@ -226,13 +231,49 @@
 	return self;
 }
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer {
-    player.mightAsWellJump = YES;
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionDown)
+    {
+        [self pauser];
+    }
+    
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionUp)
+    {
+        
+        player.mightAsWellJump = YES;
+    }
     
     
 }
 -(void) handleTapFrom:(UITapGestureRecognizer *) recognizer {
     player.shoot = YES;
     
+}
+-(void) pauser
+{
+    
+    if (paused)
+    {
+        
+        self.start = [NSDate date];
+        [[CCDirector sharedDirector] resume];
+        [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
+        [[CCDirector sharedDirector] startAnimation];
+        paused = FALSE;
+    }
+    else
+    {
+        
+        
+        
+        
+        [self unschedule:@selector(update:)];
+        
+        paused = TRUE;
+        [[CCDirector sharedDirector] stopAnimation];
+        [[CCDirector sharedDirector] pause];
+        [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+        [self schedule:@selector(update:)];
+    }
 }
 -(void)update:(ccTime)dt
 {
@@ -321,7 +362,7 @@
         {
         
         CCLabelTTF *stuckLabel = [[CCLabelTTF alloc] initWithString:@"You got stuck!" fontName:@"Helvetica" fontSize:40];
-        CGSize winSize = [[CCDirector sharedDirector] winSize];
+       
         
         stuckLabel.position = ccp(4880, 200);
         stuckLabel.color = ccc3(0, 0, 200);
@@ -486,6 +527,7 @@
     
     gestureRecognizer.enabled = NO;
     gestureRecognizer2.enabled = NO;
+    gestureRecognizer3.enabled = NO;
 	
     
 	if (won) {

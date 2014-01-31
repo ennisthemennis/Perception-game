@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "GameLevelLayer.h"
 #import "StartMenuLayer.h"
+#import "SimpleAudioEngine.h"
 
 @implementation AppController
 
@@ -120,6 +121,9 @@
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
+    [[CCDirector sharedDirector] stopAnimation];
+    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+    [[CCDirector sharedDirector] pause];
 }
 
 // call got rejected
@@ -127,12 +131,19 @@
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ resume];
+    [[CCDirector sharedDirector] stopAnimation];
+    [[CCDirector sharedDirector] resume];
+    [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
+    [[CCDirector sharedDirector] startAnimation];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
+    [[CCDirector sharedDirector] stopAnimation];
+    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+    [[CCDirector sharedDirector] pause];
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application

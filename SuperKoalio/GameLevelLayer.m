@@ -24,13 +24,14 @@
     CCLayerColor *whiteback;
     UISwipeGestureRecognizer *gestureRecognizer;
     UITapGestureRecognizer *gestureRecognizer2;
+    UISwipeGestureRecognizer *gestureRecognizer3;
     CCSprite *bullet;
     NSTimeInterval timeInterval;
     CCSprite* alien1;
     CCSprite* alien2;
     CCSprite* alien3;
     CCSprite* alien4;
-   
+    
     CGPoint velocity2;
     CGPoint velocity3;
     CGPoint velocity4;
@@ -44,6 +45,7 @@
     CCSprite* count2;
     CCSprite* count3;
     BOOL go;
+    BOOL paused;
     
     
 }
@@ -76,6 +78,9 @@
     [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer];
     gestureRecognizer2 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapFrom:)] autorelease];
     [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer2];
+    gestureRecognizer3 = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)] autorelease];
+    [gestureRecognizer3 setDirection:(UISwipeGestureRecognizerDirectionDown)];
+    [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer3];
     
     
 }
@@ -91,7 +96,7 @@
         [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:0.2];
         self.isTouchEnabled = YES;
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile: @"heroframes.plist"];
-        
+        paused = FALSE;
         
         go = FALSE;
         CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"heroframes.png"];
@@ -171,7 +176,7 @@
         shake = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:shaking restoreOriginalFrame:NO]];
         [alien4 runAction:shake];
         [map addChild:alien4 z:15];
-        instructions = [CCSprite spriteWithFile:@"rounded-blue-sq.png" ];
+        instructions = [CCSprite spriteWithFile:@"rounded-blue-sq-1.png" ];
         instructions.position = ccp(winSize.width/2, 200);
         instructions.scale  = .125;
         [map addChild:instructions z:5];
@@ -214,9 +219,44 @@
 	return self;
 }
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer {
-    player.mightAsWellJump = NO;
+   if (recognizer.direction == UISwipeGestureRecognizerDirectionDown)
+   {
+       [self pauser];
+   }
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionUp)
+    {
+        player.mightAsWellJump = NO;
+    }
     
     
+    
+}
+-(void) pauser
+{
+   
+    if (paused)
+    {
+        
+        self.start = [NSDate date];
+        [[CCDirector sharedDirector] resume];
+        [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
+        [[CCDirector sharedDirector] startAnimation];
+        paused = FALSE;
+    }
+    else
+    {
+        
+        
+        
+        
+        [self unschedule:@selector(update:)];
+        
+        paused = TRUE;
+    [[CCDirector sharedDirector] stopAnimation];
+    [[CCDirector sharedDirector] pause];
+    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+        [self schedule:@selector(update:)];
+    }
 }
 -(void) handleTapFrom:(UITapGestureRecognizer *) recognizer {
     player.shoot = YES;
@@ -475,6 +515,7 @@
         CGPoint bulletvelocity = ccp(7.0, 0.0);
         CGPoint placehold = bullet.position;
         bullet.position = ccpAdd(bulletvelocity, placehold);
+        
         timeInterval = [self.start timeIntervalSinceNow];
         
         if (timeInterval < (-1.75) + (player.enemiesKilled * .25))

@@ -23,6 +23,7 @@
     CCLayerColor *whiteback;
     UISwipeGestureRecognizer *gestureRecognizer;
     UITapGestureRecognizer *gestureRecognizer2;
+    UISwipeGestureRecognizer *gestureRecognizer3;
     CCSprite *bullet;
     NSTimeInterval timeInterval;
     CCSprite* alien1;
@@ -39,7 +40,7 @@
     BOOL alien2here;
     BOOL alien3here;
     BOOL alien4here;
-   
+    BOOL paused;
     CCSprite* instructions;
     BOOL start;
     BOOL won;
@@ -80,6 +81,9 @@
     gestureRecognizer2 = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapFrom:)] autorelease];
     [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer2];
     
+    gestureRecognizer3 = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)] autorelease];
+    [gestureRecognizer3 setDirection:(UISwipeGestureRecognizerDirectionDown)];
+    [[CCDirector sharedDirector].view addGestureRecognizer:gestureRecognizer3];
     
 }
 
@@ -96,7 +100,7 @@
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile: @"heroframes.plist"];
         go = FALSE;
         won = FALSE;
-        
+        paused = FALSE;
         CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"heroframes.png"];
         
         [self addChild:spriteSheet];
@@ -219,7 +223,14 @@
 	return self;
 }
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer {
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionDown)
+    {
+        [self pauser];
+    }
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionUp)
+    {
     player.mightAsWellJump = YES;
+    }
     
     
 }
@@ -227,6 +238,35 @@
     player.shoot = YES;
     
 }
+-(void) pauser
+{
+    
+    if (paused)
+    {
+        
+        self.start = [NSDate date];
+        [[CCDirector sharedDirector] resume];
+        [[SimpleAudioEngine sharedEngine] resumeBackgroundMusic];
+        [[CCDirector sharedDirector] startAnimation];
+        paused = FALSE;
+    }
+    else
+    {
+        
+        
+        
+        
+        [self unschedule:@selector(update:)];
+        
+        paused = TRUE;
+        [[CCDirector sharedDirector] stopAnimation];
+        [[CCDirector sharedDirector] pause];
+        [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+        [self schedule:@selector(update:)];
+    }
+}
+
+
 -(void)update:(ccTime)dt
 {
     

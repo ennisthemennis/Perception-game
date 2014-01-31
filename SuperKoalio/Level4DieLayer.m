@@ -52,8 +52,8 @@
                                                              selector:@selector(doThis2:)];
     
     self.myMenu = [CCMenu menuWithItems:menuItem1, menuItem2, nil];
-    menuItem1.scale = .4;
-    menuItem2.scale = .4;
+    menuItem1.scale = .6;
+    menuItem2.scale = .6;
     
     menuItem1.position = ccp(-100, -50);
     menuItem2.position = ccp(100, -50);

@@ -20,6 +20,6 @@
 +(id) scene;
 -(void) setUpMenus;
 -(void) doThis: (CCMenuItem  *) menuItem;
-
+-(void)resizeSprite:(CCSprite*)sprite toWidth:(float)width toHeight:(float)height;
 
 @end
